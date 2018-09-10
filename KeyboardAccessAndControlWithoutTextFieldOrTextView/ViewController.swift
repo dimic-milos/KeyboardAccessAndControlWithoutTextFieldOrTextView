@@ -10,16 +10,45 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+    // MARK: - Properties
+    
+    var autocorrectionType: UITextAutocorrectionType = .no
+    
+    // MARK: - Override methods
+    
+    override var canBecomeFirstResponder: Bool {
+        return true
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        return action == #selector(resignFirstResponder)
     }
+    
+    // MARK: - Action methods
+    
+    @IBAction func showKeyboard(_ sender: UIButton) {
+        becomeFirstResponder()
+    }
+    
+    @IBAction func hideKeyboard(_ sender: UIButton) {
+        dismissKeyboard()
+    }
+    
+    @objc private func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
 
-
+extension ViewController: UIKeyInput{
+    
+    var hasText: Bool {
+        return true
+    }
+    
+    func insertText(_ text: String) {
+    }
+    
+    func deleteBackward() {
+    }
 }
 
